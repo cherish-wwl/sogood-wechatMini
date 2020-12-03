@@ -1,0 +1,40 @@
+/* pages/aliyunoss/aliyunoss.wxss */
+button.blue{
+  background-color: blue !important;
+}
+.d-flex{
+  display: flex;
+  justify-content: flex-end;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  padding: 20rpx 0;
+}
+.d-flex button {
+  width: auto !important;
+  margin: 0 !important;
+  margin-right: 20rpx !important;
+}
+
+.container{
+  padding: 20rpx;
+}
+.item{
+   display: flex;
+   align-items: flex-end;
+   margin-bottom: 20rpx;
+}
+.item .title{
+  margin-bottom: 20rpx;
+}
+
+.item .left {
+  flex: 1;
+}
+.item .right{
+  margin-left: 5%;
+  width: 145rpx;
+  text-align: center;
+}

@@ -1,0 +1,23 @@
+<view>
+  <view class="container">
+  <view>accessid:{{auth.accessid}} </view>
+  <view>token: {{options.token}} </view>
+  <view>show:{{show}}</view>
+    <view class="item" wx:for="{{images}}" wx:for-index="idx" wx:key="time">
+      <view class="left">
+        <view class="title">{{item.name}}</view>
+        <progress percent="{{item.percent}}"></progress>
+      </view>
+      <view class="right">
+        <button size="mini" bindtap="btnClick" data-index="{{idx}}">
+
+          {{ item.ossUrl ? '已完成' : (item.upload || '取消')}}
+        </button>
+      </view>
+    </view>
+  </view>
+  <view class="d-flex">
+    <button type="primary" bindtap="chooseLocalImage">继续添加</button>
+    <button type="primary" class="blue" bindtap="confrim" >确定</button>
+  </view>
+</view>
