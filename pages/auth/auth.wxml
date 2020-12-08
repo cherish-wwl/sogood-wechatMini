@@ -1,8 +1,5 @@
 <view>
   <view class="container">
-  <view>accessid:{{auth.accessid}} </view>
-  <view>token: {{options.token}} </view>
-  <view>show:{{show}}</view>
     <view class="item" wx:for="{{images}}" wx:for-index="idx" wx:key="time">
       <view class="left">
         <view class="title">{{item.name}}</view>

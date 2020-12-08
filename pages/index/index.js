@@ -5,9 +5,10 @@ const app = getApp()
 Page({
   data: {
     src: '',
-    ori_src: 'https://www.sogoodprint.com',
+    ori_src: 'http://192.168.1.28:8080/',
     oss: '',
-    token: ""
+    token: "",
+    userInfo: null
   },
 
   onLoad: function (options) {
@@ -18,21 +19,26 @@ Page({
     wx.getSetting({
       success: function (res) {
         if (res.authSetting['scope.userInfo']) {
-          console.log("用户授权了");
-          wx.login({
-            success: e => {
-              let code = e.code;
-              console.log(code)
-              if (code) { }
-              that.getToken(code)
-            }
-          })
+          console.log("用户授权了",res);
+          that.getWechatUserInfo();
+          that.TouchWXLogin()
         } else {
           //用户没有授权
           console.log("用户没有授权");
         }
       }
     });
+  },
+  getWechatUserInfo(){
+    const that = this
+    wx.getUserInfo({
+      success: function(res) {
+        console.log('getWechatUserInfo', res)
+        that.setData({
+          userInfo: res
+        })
+      }
+    })
   },
   onShow: function () {
     this.setData({
@@ -42,19 +48,25 @@ Page({
   },
   setSrc() {
     this.setData({
-      src: this.data.ori_src + '?token=' + this.data.token + '&vid=' + new Date().getTime()
+      src: this.data.ori_src + '?token=' + this.data.token
+    })
+  },
+  TouchWXLogin(){
+    wx.login({
+      success: e => {
+        let code = e.code;
+        console.log('code',code)
+        this.getSessionKey(code)
+      }
     })
   },
   bindGetUserInfo: function (res) {
     console.log('bindgetuserinfo', res)
     if (res.detail.userInfo) {
-      wx.login({
-        success: e => {
-          let code = e.code;
-          console.log(code)
-          this.getToken(code)
-        }
+      this.setData({
+        userInfo: res.detail
       })
+      this.TouchWXLogin()
     } else {
       wx.showModal({
         title: '警告',
@@ -70,16 +82,59 @@ Page({
 
     }
   },
-  getToken(code) {
-    const url = 'https://www.sogoodprint.com/stage-api/wxmini/info'
+  getSessionKey(code) {
+    const url = 'https://www.sogoodprint.com/stage-api/wxmini/login'
     const that = this
     wx.request({
       url: url,
       header: {
         'content-type': 'application/json', // 默认值
+        'type': 2
       },
       data: {
         code
+      },
+      success(res) {
+        console.log('getSessionKey',res.data)
+        if (res.data.code == 200) {
+          that.getWXInfo(res.data.data)
+        } else {
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      },
+      fail: function (res) {
+        console.log(res);
+        wx.showToast({
+          title: res,
+          icon: 'none',
+          duration: 2000
+        })
+      }
+    })
+ 
+  },
+  getWXInfo(session){
+    console.log('getWXInfo',this.data.userInfo,session )
+    // /wxmini/info
+    const url = 'https://www.sogoodprint.com/stage-api/wxmini/info'
+    const that = this
+    wx.request({
+      url: url,
+      method:'POST',
+      header: {
+        'content-type': 'application/json', // 默认值
+        'type': 2
+      },
+      data: {
+        sessionKey: session.sessionKey,
+        signature: this.data.userInfo.signature,
+        rawData: this.data.userInfo.rawData,
+        encryptedData: this.data.userInfo.encryptedData,
+        iv: this.data.userInfo.iv,
       },
       success(res) {
         console.log(res.data)
@@ -105,7 +160,7 @@ Page({
         })
       }
     })
-
+ 
   },
   onShareAppMessage: function (ops) {
     var that = this
@@ -116,5 +171,10 @@ Page({
 
     }
 
+  },
+  toPay(){
+    wx.navigateTo({
+      url: '/pages/pay/pay',
+    })
   }
 })

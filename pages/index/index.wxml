@@ -2,4 +2,5 @@
 <view class="container">
   <web-view wx:if="{{!!src}}" src="{{src}}" bindmessage="postMessage"></web-view>
   <button class="loginButton"  wx:else type="primary" plain="true" bindgetuserinfo="bindGetUserInfo" open-type="getUserInfo" >授权登录</button>
+  <button bindtap="toPay">toPay</button>
 </view>
