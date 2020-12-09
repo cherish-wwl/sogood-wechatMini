@@ -32,7 +32,7 @@ Page({
                 header: {
                     'content-type': 'application/json', // 默认值
                     'token': this.options.token,
-                    'type': '0'
+                    'type': '1'
                 },
                 success(res) {
                     console.log(res.data)
@@ -162,7 +162,7 @@ Page({
             header: {
                 'content-type': 'application/json', // 默认值
                 'token': this.options.token,
-                'type': '0'
+                'type': '1'
             },
             data: {
                 fileName: item.name,

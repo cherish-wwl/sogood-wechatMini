@@ -5,14 +5,19 @@ const app = getApp()
 Page({
   data: {
     src: '',
-    ori_src: 'http://192.168.1.28:8080/',
+    ori_src: 'https://www.sogoodprint.com/',
     oss: '',
     token: "",
-    userInfo: null
+    userInfo: null,
+    isLoaded: false
   },
 
   onLoad: function (options) {
     var that = this;
+    console.log('index options',options)
+    this.setData({
+        options
+    })
   },
   getLogin() {
     var that = this;
@@ -25,6 +30,9 @@ Page({
         } else {
           //用户没有授权
           console.log("用户没有授权");
+          that.setData({
+            isLoaded: true
+          })
         }
       }
     });
@@ -47,8 +55,12 @@ Page({
     this.getLogin();
   },
   setSrc() {
+    let path = '?token=' + this.data.token
+    if(this.options.order){
+      path = 'page/orderDetail?order=' + this.options.order + '&token='  + this.data.token
+    } 
     this.setData({
-      src: this.data.ori_src + '?token=' + this.data.token
+      src: this.data.ori_src + path 
     })
   },
   TouchWXLogin(){
@@ -57,6 +69,11 @@ Page({
         let code = e.code;
         console.log('code',code)
         this.getSessionKey(code)
+      },
+      fail: e => {
+        that.setData({
+          isLoaded: true
+        })
       }
     })
   },
@@ -89,7 +106,7 @@ Page({
       url: url,
       header: {
         'content-type': 'application/json', // 默认值
-        'type': 2
+        'type': 1
       },
       data: {
         code
@@ -104,6 +121,9 @@ Page({
             icon: 'none',
             duration: 2000
           })
+          that.setData({
+            isLoaded: true
+          })
         }
       },
       fail: function (res) {
@@ -112,6 +132,9 @@ Page({
           title: res,
           icon: 'none',
           duration: 2000
+        })
+        that.setData({
+          isLoaded: true
         })
       }
     })
@@ -127,7 +150,7 @@ Page({
       method:'POST',
       header: {
         'content-type': 'application/json', // 默认值
-        'type': 2
+        'type': 1
       },
       data: {
         sessionKey: session.sessionKey,
@@ -150,6 +173,9 @@ Page({
             duration: 2000
           })
         }
+        that.setData({
+          isLoaded: true
+        })
       },
       fail: function (res) {
         console.log(res);
@@ -157,6 +183,9 @@ Page({
           title: res,
           icon: 'none',
           duration: 2000
+        })
+        that.setData({
+          isLoaded: true
         })
       }
     })

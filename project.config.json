@@ -4,7 +4,7 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "es6": false,
     "enhance": false,
     "postcss": true,
@@ -29,14 +29,14 @@
       "outputPath": ""
     },
     "enableEngineNative": false,
+    "bundle": false,
     "useIsolateContext": true,
     "useCompilerModule": true,
     "userConfirmedUseCompilerModuleSwitch": false,
     "userConfirmedBundleSwitch": false,
     "packNpmManually": false,
     "packNpmRelationList": [],
-    "minifyWXSS": true,
-    "bundle": false
+    "minifyWXSS": true
   },
   "compileType": "miniprogram",
   "libVersion": "2.14.0",
@@ -65,6 +65,12 @@
           "name": "auth",
           "pathName": "pages/auth/auth",
           "query": "token= 556e1162-27bb-45d3-b60b-d321a342649a",
+          "scene": null
+        },
+        {
+          "name": "pages/pay/pay",
+          "pathName": "pages/pay/pay",
+          "query": "token=oJHIr5COfileOr04vka9grECnRHY&order= SGO1607498343413",
           "scene": null
         }
       ]

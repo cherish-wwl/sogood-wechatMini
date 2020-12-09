@@ -22,4 +22,8 @@
 
 .loginButton{
   margin-top: 500rpx;
+  
+}
+.d_none{
+  display: none;
 }
